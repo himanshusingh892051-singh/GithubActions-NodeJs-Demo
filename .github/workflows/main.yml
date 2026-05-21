@@ -1,24 +1,29 @@
-Name: Build nodejs application using github actions
+name: Build nodejs application using github actions
+
 on:
   push:
-    branches: 
+    branches:
       - master
+  workflow_dispatch:
 
-      workflow_dispatch:
-      jobs:
+jobs:
   buildnodejs:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
-      - name: Install nodejs of version 18 and npm
-        uses: actions/setup-node@v6
+        uses: actions/checkout@v4
+
+      - name: Install Node.js version 18
+        uses: actions/setup-node@v4
         with:
           node-version: 18
-          npm-version: latest
+
       - name: Install dependencies
         run: npm install
-      - name: run tests using npm
+
+      - name: Run tests using npm
         run: npm test
-      - name: build the application using npm
+
+      - name: Build the application using npm
         run: npm run build
