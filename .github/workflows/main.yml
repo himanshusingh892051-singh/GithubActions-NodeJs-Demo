@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+
   workflow_dispatch:
 
 jobs:
@@ -27,3 +28,9 @@ jobs:
 
       - name: Build the application using npm
         run: npm run build
+
+      - name: Upload the artifact from runner to current GitHub repository
+        uses: actions/upload-artifact@v7
+        with:
+          name: build-artifact
+          path: /home/runner/work/GithubActions-NodeJs-Demo/GithubActions-NodeJs-Demo/dist/index.html
