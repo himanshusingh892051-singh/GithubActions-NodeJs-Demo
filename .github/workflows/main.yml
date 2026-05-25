@@ -1,32 +1,49 @@
-name: Multipule runner and choose jobs
+name: Multiple runner and choose jobs
+
 on:
   workflow_dispatch:
     inputs:
-        runner:
-            description: 'Select the runner to run the job'
-            required: true
-            default: 'ubuntu-latest'
-            type: choice
-            options:
-                - ubuntu-latest
-                - windows-latest
-                - macos-latest
-        jobs-name:
-            description: 'Select the job to run'
-            required: true
-            default: 'build'
-            type: choice
-            options:
-                - build-job
-                - test-job
-                - deploy-job
+      runner:
+        description: 'Select the runner to run the job'
+        required: true
+        default: ubuntu-latest
+        type: choice
+        options:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+
+      jobs-name:
+        description: 'Select the job to run'
+        required: true
+        default: build-job
+        type: choice
+        options:
+          - build-job
+          - test-job
+          - deploy-job
+
 jobs:
-    build-job:
-        if: ${{ github.event.inputs.jobs-name == 'build-job' }}
-        runs-on: ${{ github.event.inputs.runner }}
-    test-job:
-        if: ${{ github.event.inputs.jobs-name == 'test-job' }}
-        runs-on: ${{ github.event.inputs.runner }}
-    deploy-job:
-        if: ${{ github.event.inputs.jobs-name == 'deploy-job' }}
-        runs-on: ${{ github.event.inputs.runner }}
+  build-job:
+    if: ${{ github.event.inputs.jobs-name == 'build-job' }}
+    runs-on: ${{ github.event.inputs.runner }}
+
+    steps:
+      - name: Build step
+        run: echo "Running Build Job"
+
+  test-job:
+    if: ${{ github.event.inputs.jobs-name == 'test-job' }}
+    runs-on: ${{ github.event.inputs.runner }}
+
+    steps:
+      - name: Test step
+        run: echo "Running Test Job"
+
+  deploy-job:
+    if: ${{ github.event.inputs.jobs-name == 'deploy-job' }}
+    runs-on: ${{ github.event.inputs.runner }}
+
+    steps:
+      - name: Deploy step
+        run: echo "Running Deploy Job"
