@@ -1,33 +1,36 @@
-name: Build nodejs application using github actions
+name: Multipule runner and choose jobs
 on:
   push:
     branches: 
       - master
 
-  workflow_dispatch: 
+  workflow_dispatch:
+    inputs:
+        runner:
+            description: 'Select the runner to run the job'
+            required: true
+            default: 'ubuntu-latest'
+            type: choice
+            options:
+                - ubuntu-latest
+                - windows-latest
+                - macos-latest
+        jobs-name:
+            description: 'Select the job to run'
+            required: true
+            default: 'buil'
+            type: choice
+            options:
+                - build-job
+                - test-job
+                - deploy-job
 jobs:
-   buildnodejs:
-    continue-on-error: true
-    strategy:
-      matrix:
-        node-version: [12, 16, 18, 20]
-        operating-system: [ubuntu-latest, windows-latest]
-        exclude:
-          - node-version: 12
-            operating-system: windows-latest
-          - node-version: 12
-            operating-system: ubuntu-latest
-    runs-on: ${{ matrix.operating-system }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-      - name: Install nodejs of version ${{ matrix.node-version }} and npm
-        uses: actions/setup-node@v6
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Install dependencies using npm
-        run: npm install
-      - name: run tests using npm
-        run: npm test
-      - name: build the application using npm
-        run: npm run build
+    build-job:
+        if: ${{ github.event.inputs.jobs-name == 'build-job' }}
+        runs-on: ${{ github.event.inputs.runner }}
+    test-job:
+        if: ${{ github.event.inputs.jobs-name == 'test-job' }}
+        runs-on: ${{ github.event.inputs.runner }}
+    deploy-job:
+        if: ${{ github.event.inputs.jobs-name == 'deploy-job' }}
+        runs-on: ${{ github.event.inputs.runner }}
