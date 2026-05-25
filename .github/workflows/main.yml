@@ -1,9 +1,5 @@
 name: Multipule runner and choose jobs
 on:
-  push:
-    branches: 
-      - master
-
   workflow_dispatch:
     inputs:
         runner:
