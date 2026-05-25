@@ -1,4 +1,4 @@
-Name: Build nodejs application using github actions
+name: Build nodejs application using github actions
 on:
   push:
     branches: 
