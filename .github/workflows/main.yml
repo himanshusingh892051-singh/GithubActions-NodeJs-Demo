@@ -18,7 +18,7 @@ on:
         jobs-name:
             description: 'Select the job to run'
             required: true
-            default: 'buil'
+            default: 'build'
             type: choice
             options:
                 - build-job
