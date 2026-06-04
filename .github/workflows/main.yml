@@ -1,29 +1,36 @@
-Name: Build nodejs application using github actions
+name: Build nodejs application using github actions
+
 on:
   push:
-    branches: 
+    branches:
       - master
 
-      workflow_dispatch:
-      jobs:
+  workflow_dispatch:
+
+jobs:
   buildnodejs:
     runs-on: self-hosted
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
-      - name: Install nodejs of version 18 and npm
-        uses: actions/setup-node@v6
+        uses: actions/checkout@v7
+
+      - name: Install nodejs version 18
+        uses: actions/setup-node@v4
         with:
           node-version: 18
-          npm-version: latest
+
       - name: Install dependencies
         run: npm install
-      - name: run tests using npm
+
+      - name: Run tests using npm
         run: npm test
-      - name: build the application using npm
+
+      - name: Build the application using npm
         run: npm run build
-      - name: Upload the artifact from runner to current github repository
+
+      - name: Upload artifact to GitHub
         uses: actions/upload-artifact@v7
         with:
           name: build-artifact
-          path: /home/runner/work/GithubActions-NodeJs-Demo/GithubActions-NodeJs-Demo/dist/index.html
+          path: dist/
